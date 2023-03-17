@@ -1,34 +1,19 @@
-import axios, { AxiosResponse } from "axios";
-import { useMutation } from "react-query";
+import { Button } from "antd";
+import axios from "axios";
 
 function App() {
-  const getAxios = (): Promise<AxiosResponse> => {
-    return axios.get(url);
+  const url = "/user/api/v1/oauth2/login";
+
+  const handleLogin = async () => {
+    await axios
+      .get(url)
+      .then((resp) => {
+        console.log({ success: resp.data });
+      })
+      .catch((error) => console.log({ error }));
   };
 
-  const useLoginMutate = () => {
-    return useMutation(["kakao"], () => getAxios(), {
-      onSuccess: (data) => {
-        console.log("Success", data);
-      },
-      onError: (data) => {
-        console.log("Error", data);
-      },
-    });
-  };
-
-  const mutate = useLoginMutate();
-  const handleLogin = () => {
-    mutate.mutate();
-  };
-
-  const url = "/";
-
-  return (
-    <button onClick={handleLogin} type="button">
-      Login
-    </button>
-  );
+  return <Button onClick={handleLogin}>Login</Button>;
 }
 
 export default App;
